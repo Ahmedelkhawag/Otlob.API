@@ -18,6 +18,8 @@ namespace Otlob.API.Profiles
                 .ForMember(b => b.ProductBrand, o => o.MapFrom(n => n.ProductBrand.Name))
                 // Specify the PictureUrlResolver for the PictureUrl field in the ProductDto
                 .ForMember(dto => dto.PictureUrl, o => o.MapFrom<ProductPictureUrlResolver>());
+
+            CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }

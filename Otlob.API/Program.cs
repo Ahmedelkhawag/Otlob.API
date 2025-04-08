@@ -52,7 +52,7 @@ namespace Otlob.API
             builder.Services.AddApllicationService();
 
             // Configure Identity Services
-            builder.Services.AddIdentityServices();
+            builder.Services.AddIdentityServices(builder.Configuration);
             #endregion
 
             #region Build Project
@@ -86,6 +86,7 @@ namespace Otlob.API
             app.UseStatusCodePagesWithRedirects("errors/{0}");
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

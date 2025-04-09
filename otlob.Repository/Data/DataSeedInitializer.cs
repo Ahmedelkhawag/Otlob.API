@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Otlob.Core.Models;
-using Otlob.Repository.Data;
+using Otlob.Core.Order_Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Otlob.Repository
+namespace Otlob.Repository.Data
 {
     public class DataSeedInitializer
     {
@@ -63,6 +63,20 @@ namespace Otlob.Repository
             }
             #endregion
 
+            #region Delivery Method
+
+            if (!context.DeliveryMethod.Any())
+            { 
+            var deliveryMethodData = File.ReadAllText("../Otlob.Repository/Data/DataSeed/Delivery.json");
+                var deliveryMethods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryMethodData);
+                if (deliveryMethods.Count() > 0)
+                {
+                    await context.Set<DeliveryMethod>().AddRangeAsync(deliveryMethods);
+                    await context.SaveChangesAsync();
+                }
+            }
+
+            #endregion
         }
     }
 }

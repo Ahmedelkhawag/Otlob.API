@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Otlob.Core.Models;
+using Otlob.Core.Order_Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,9 @@ namespace Otlob.Repository.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

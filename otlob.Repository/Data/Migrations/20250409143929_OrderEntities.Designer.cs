@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Otlob.Repository.Data;
 
 #nullable disable
 
-namespace Otlob.Repository.Migrations
+namespace Otlob.Repository.Data.Migrations
 {
     [DbContext(typeof(API1DbContext))]
-    partial class API1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250409143929_OrderEntities")]
+    partial class OrderEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

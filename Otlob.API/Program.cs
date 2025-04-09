@@ -9,7 +9,6 @@ using Otlob.API.Middlewares;
 using Otlob.API.Profiles;
 using Otlob.Core.Models;
 using Otlob.Core.Repositories;
-using Otlob.Repository;
 using Otlob.Repository.Data;
 using Otlob.Repository.Identity;
 using Otlob.Repository.Repositories;

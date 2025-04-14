@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Otlob.API.DTOs;
 using Otlob.API.Errors;
 using Otlob.API.Helpers;
+using Otlob.Core.Interfaces;
 using Otlob.Core.Models;
 using Otlob.Core.Repositories;
 using Otlob.Core.Specifications;
@@ -14,19 +15,13 @@ namespace Otlob.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IGenericRepository<Product> _productRepo;
-        private readonly IGenericRepository<ProductBrand> _brandRepo;
-        private readonly IGenericRepository<ProductType> _TypesRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductsController(IGenericRepository<Product> productRepo,
-            IGenericRepository<ProductBrand> brandRepo, IGenericRepository<ProductType> TypesRepo,
-            IMapper mapper)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _productRepo = productRepo;
-            _brandRepo = brandRepo;
-            _TypesRepo = TypesRepo;
-            _mapper = mapper; // Inject IMapper 
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         #region EndPoints
@@ -37,12 +32,12 @@ namespace Otlob.API.Controllers
         {
             var specification = new ProductWithBrandAndTypeSpecification(productParams);
 
-            var products = await _productRepo.GetAllWithSpecificationAsync(specification);
+            var products = await _unitOfWork.Repository<Product>().GetAllWithSpecificationAsync(specification);
 
             var mappedProducts = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
             var paginationResponse = new PaginationResponse<ProductDto>
-                (productParams.pageNumber, productParams.PageSize, _productRepo.GetAllAsync().Result.Count, mappedProducts);
+                (productParams.pageNumber, productParams.PageSize, _unitOfWork.Repository<Product>().GetAllAsync().Result.Count, mappedProducts);
 
             return Ok(paginationResponse);
         }
@@ -53,7 +48,7 @@ namespace Otlob.API.Controllers
         public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
             var specification = new ProductWithBrandAndTypeSpecification(id);
-            var product = await _productRepo.GetEntityWithSpecificationAsync(specification);
+            var product = await _unitOfWork.Repository<Product>().GetEntityWithSpecificationAsync(specification);
 
             if (product is null)
                 return NotFound(new ErrorResponse(404));
@@ -70,7 +65,7 @@ namespace Otlob.API.Controllers
         {
             var specification = new ProductTypesSpecification(sort);
 
-            var productTypes = await _TypesRepo.GetAllWithSpecificationAsync(specification);
+            var productTypes = await _unitOfWork.Repository<ProductType>().GetAllWithSpecificationAsync(specification);
 
             return Ok(productTypes);
         }
@@ -82,7 +77,7 @@ namespace Otlob.API.Controllers
         {
             var specification = new ProductBrandsSpecification(sort);
 
-            var productBrands = await _brandRepo.GetAllWithSpecificationAsync(specification);
+            var productBrands = await _unitOfWork.Repository<ProductBrand>().GetAllWithSpecificationAsync(specification);
 
             return Ok(productBrands);
         }

@@ -3,8 +3,10 @@ using Otlob.API.Errors;
 using Otlob.API.Profiles;
 using Otlob.Core.Interfaces;
 using Otlob.Core.Repositories;
+using Otlob.Core.Services;
 using Otlob.Repository.Implmentations;
 using Otlob.Repository.Repositories;
+using Otlob.Service;
 
 namespace Otlob.API.ExtensionMethods
 {
@@ -14,6 +16,8 @@ namespace Otlob.API.ExtensionMethods
         {
             // Allow Dependency Injection For All Models
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IOrderService), typeof(OrderServiceWithUOF));
+            services.AddScoped(typeof(IOrderService), typeof(OrderServiceWithoutUOF));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             // Add AutoMapper Service

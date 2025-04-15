@@ -28,6 +28,9 @@ namespace Otlob.Repository.Repositories
 
         public async Task<T> GetByIdAsync(int id)
                 => await _dbContext.Set<T>().FindAsync(id);
+
+        public async Task AddAsync(T entity)
+        => await _dbContext.Set<T>().AddAsync(entity);
         #endregion
 
 
@@ -42,6 +45,8 @@ namespace Otlob.Repository.Repositories
 
         private IQueryable<T> ApplySpecification(ISpecification<T> specification)
                => SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), specification);
+
+       
         #endregion
     }
 }

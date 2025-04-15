@@ -13,6 +13,7 @@ namespace Otlob.Core.Repositories
         #region Without Specification
         Task</*IEnumerable*/ IReadOnlyList<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
+        Task AddAsync(T entity);
         #endregion
 
         #region With Specification
